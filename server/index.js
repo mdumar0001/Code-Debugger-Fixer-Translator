@@ -47,6 +47,10 @@ app.use((err, req, res, next) => {
     stack: process.env.NODE_ENV === "production" ? undefined : err.stack,
   });
 });
+// Root route
+app.get("/", (req, res) => {
+  res.send("Backend API is running!");
+});
 
 // start server (existing code)
 const PORT = process.env.PORT || 5000;
