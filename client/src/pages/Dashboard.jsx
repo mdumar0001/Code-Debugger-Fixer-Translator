@@ -34,8 +34,8 @@ const Dashboard = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("JavaScript");
   const languages = ["JavaScript", "Python", "C++", "Java"];
 
-  // const BASE_URL = "http://localhost:5000";
-  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+  const BASE_URL = "https://code-debugger-fixer-translator-2-backend.onrender.com";
+  // const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     if (token) loadPastReviews();
