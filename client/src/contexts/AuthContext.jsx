@@ -73,7 +73,7 @@ export const AuthContext = createContext();
 // import axios from "axios";
 const AuthContextProvider = (props) => {
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const backendUrl = "http://localhost:5000";
+  const backendUrl = "https://code-debugger-fixer-translator-2-backend.onrender.com";
 
   // localStorage.removeItem("token");
   const [presentDash, setPresentDash] = useState(true);
