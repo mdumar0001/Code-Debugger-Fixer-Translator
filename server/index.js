@@ -17,7 +17,8 @@ const app = express();
 app.use(express.json());
 
 // allow client dev origin
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
+// app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
+app.use(cors())
 //  Database connection
 mongoose
   .connect(process.env.MONGO_URI, {
