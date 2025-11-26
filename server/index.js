@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
-import connectDB from "./config/db.js";
+import connectDB from "./src/config/db.js";
 // Import routes (add .js extension since ESM requires it)
 import authRoutes from "./src/routes/auth.js";
 import aiRoutes from "./src/routes/ai.js";
