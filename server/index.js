@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
-
+import connectDB from "./config/db.js";
 // Import routes (add .js extension since ESM requires it)
 import authRoutes from "./src/routes/auth.js";
 import aiRoutes from "./src/routes/ai.js";
@@ -20,14 +20,14 @@ app.use(express.json());
 // app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }));
 app.use(cors())
 //  Database connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected yeah"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
+// mongoose
+//   .connect(process.env.MONGO_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB connected yeah"))
+//   .catch((err) => console.error("MongoDB connection error:", err));
+connectDB();
 //
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
