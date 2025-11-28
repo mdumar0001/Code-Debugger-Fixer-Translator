@@ -16,7 +16,7 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+export default connectDB;
 
 // import mongoose from "mongoose";
 
