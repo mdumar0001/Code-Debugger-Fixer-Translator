@@ -1,109 +1,3 @@
-// import React, { useContext, useState } from "react";
-// // import { assets } from "../assets/assets";
-// import { NavLink, useNavigate } from "react-router-dom";
-// // import { AuthContext } from "./context/AuthContext.jsx";
-// import { AuthContext } from "../contexts/AuthContext.jsx";
-// const Navbar = () => {
-//   const navigate = useNavigate();
-//   const [showMenu, setShowMenu] = useState(false);
-//   const { token, setToken } = useContext(AuthContext);
-//   //token true mean use logged in so we will not show the create account button
-
-//   const logout = () => {
-//     setToken(false);
-//     localStorage.removeItem("token");
-//     navigate("/");
-//   };
-
-//   return (
-//     <div className=" flex justify-between mx-5 items-center text-sm py-2 mb-5 border-b border-b-gray-400">
-//       {/* <img
-//         onClick={() => navigate("/")}
-//         className="w-44 cursor-pointer"
-//         src={assets.logo}
-//       /> */}
-//       <ul className="hidden  md:flex items-start gap-5 font-medium">
-//         <NavLink to="/">
-//           <li className="py-1">HOME</li>
-//           <hr className=" border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-//         </NavLink>
-
-//         <NavLink to="/about">
-//           {/* onclicking these navlink a active class will be added so we use it to style the actiavted link */}
-//           <li className="py-1">ABOUT</li>
-//           <hr className=" border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-//         </NavLink>
-//         {/* <NavLink to="/contact">
-//           <li className="py-1">CONTACT</li>
-//           <hr className=" border-none outline-none h-0.5 bg-indigo-500 w-3/5 m-auto hidden" />
-//         </NavLink> */}
-//       </ul>
-//       {/* <button
-//         onClick={
-//           () =>
-//             window.open(`${import.meta.env.VITE_ADMIN_DOCTOR_PANEL}`, "_blank")
-//           //VITE_likhna padta hai pahle environent variable banane se pahle
-//         }
-//         className="px-1 py-2 rounded-lg text-sm bg-gray-500 text-white hover:bg-green-800 active:translate-y-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300 shadow"
-//       >
-//         Admin & Doctor Panel
-//       </button> */}
-//       <div className="flex items-center gap-4">
-//         {token ? (
-//           <div className="flex items-center gap-2 cursor-pointer group relative">
-//             <p
-//               onClick={() => logout()}
-//               className="hover:text-black cursor-pointer"
-//             >
-//               Logout
-//             </p>
-//           </div>
-//         ) : (
-//           <button
-//             onClick={() => navigate("/login")}
-//             className="border rounded-full bg-indigo-500 px-8 py-3 text-white font-light hidden md:block"
-//           >
-//             Create account
-//           </button>
-//         )}
-
-//         {/* ----------------MOBILE MENU--------------------- */}
-//         {/* <div
-//           className={`${
-//             showMenu ? "fixed w-full" : "h-0 w-0"
-//           } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
-//         >
-//           <div className="flex items-center justify-between px-5 py-6">
-//             <img className="w-36" src={assets.logo} alt="" />
-//             <img
-//               className="w-7"
-//               onClick={() => setShowMenu(false)}
-//               src={assets.cross_icon}
-//               alt=""
-//             />
-//           </div>
-//           <ul className="flex flex-col gap-2 items-center mt-5 px-5 text-lg font-medium">
-//             {/* color is set in index.csss on actie link */}
-//         {/* <NavLink onClick={() => setShowMenu(false)} to={"/"}>
-//               <p className="px-4 py-2 rounded inline-block">HOME</p>
-//             </NavLink>
-//             <NavLink onClick={() => setShowMenu(false)} to={"/doctors"}>
-//               <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
-//             </NavLink>
-//             <NavLink onClick={() => setShowMenu(false)} to={"/about"}>
-//               <p className="px-4 py-2 rounded inline-block">ABOUT</p>
-//             </NavLink>
-//             <NavLink onClick={() => setShowMenu(false)} to={"/contact"}>
-//               <p className="px-4 py-2 rounded inline-block">CONTACT</p>
-//             </NavLink>
-//           </ul>
-//         </div> */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext.jsx";
@@ -136,7 +30,7 @@ const Navbar = () => {
             onClick={() => navigate("/")}
             className="text-xl font-bold cursor-pointer bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent"
           >
-            AI Code Debugger & Fixer
+            AI Code Debugger Fixer & Translator
           </h1>
 
           {/* Desktop Menu */}
@@ -233,7 +127,23 @@ const Navbar = () => {
                   {item.name}
                 </NavLink>
               ))}
-
+              <NavLink
+                // key={item.path}on
+                onClick={() => {
+                  setOpen(false);
+                  setPresentDash(!presentDash);
+                }}
+                to={presentDash ? "/Tdashboard" : "/dashboard"}
+                className={({ isActive }) =>
+                  `transition ${
+                    isActive
+                      ? "text-green-400 font-semibold"
+                      : "text-gray-300 hover:text-white"
+                  }`
+                }
+              >
+                {navc}
+              </NavLink>
               {/* Auth Button Mobile */}
               {token ? (
                 <button

@@ -1,35 +1,3 @@
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-
-// const Sidebar = ({ history }) => {
-//     const [isOpen, setIsOpen] = useState(true);
-
-//     const toggleSidebar = () => {
-//         setIsOpen(!isOpen);
-//     };
-
-//     return (
-//         <div className={`bg-gray-800 text-white h-full transition-transform duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
-//             <button onClick={toggleSidebar} className="p-2">
-//                 {isOpen ? 'Close' : 'Open'}
-//             </button>
-//             <div className={`mt-4 ${isOpen ? 'block' : 'hidden'}`}>
-//                 <h2 className="text-lg font-bold">User History</h2>
-//                 <ul>
-//                     {history.map((item, index) => (
-//                         <li key={index} className="py-2">
-//                             <Link to={`/history/${item.id}`} className="hover:underline">
-//                                 {item.title}
-//                             </Link>
-//                         </li>
-//                     ))}
-//                 </ul>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Sidebar;
 import React from "react";
 import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 

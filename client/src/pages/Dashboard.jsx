@@ -1,21 +1,18 @@
-// ====================================================================================================ye line uncomment karo
-
 import React, { useEffect, useContext, useState } from "react";
 import Editor from "../components/Editor";
 import { AuthContext } from "../contexts/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import AIControls from "../components/AIControls";
-// import useAuth from "../hooks/useAuth";
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { toast } from "react-toastify";
-const Dashboard = () => {
-  // const { user } = useAuth();
-  const navigate = useNavigate();
-  const { backendUrl, token, setToken } = useContext(AuthContext);
-  const [code, setCode] = useState("");
 
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const { backendUrl, token } = useContext(AuthContext);
+
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   // RESULT STATES FROM BACKEND
@@ -23,20 +20,18 @@ const Dashboard = () => {
   const [explanation, setExplanation] = useState("");
   const [fixedCode, setFixedCode] = useState("");
 
-  // TAB STATE
-  const [activeTab, setActiveTab] = useState("errors"); // default tab
-
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState("errors");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [pastHistories, setPastHistories] = useState([]);
   const [selectedHistory, setSelectedHistory] = useState(null);
 
   const [selectedLanguage, setSelectedLanguage] = useState("JavaScript");
-  const languages = ["JavaScript", "Python", "C++", "Java"];
+  const languages = ["JavaScript", "Python", "C++", "Java", "C#"];
 
-  const BASE_URL = "https://code-debugger-fixer-translator-2-backend.onrender.com";
   // const BASE_URL = process.env.REACT_APP_BACKEND_URL;
-
+  const BASE_URL =
+    "https://code-debugger-fixer-translator-2-backend.onrender.com";
   useEffect(() => {
     if (token) loadPastReviews();
   }, [token]);
@@ -52,10 +47,9 @@ const Dashboard = () => {
           },
         }
       );
-      // console.log(data);
+
       if (data.success) {
         setPastHistories(data.list || []);
-        // console.log("PAST REVIEWS:", data.list, pastHistories);
       }
     } catch (err) {
       console.error("loadPastReviews", err);
@@ -72,7 +66,6 @@ const Dashboard = () => {
           "Content-Type": "application/json",
           token: token,
         },
-
         body: JSON.stringify({ code, language: selectedLanguage }),
       });
 
@@ -82,11 +75,11 @@ const Dashboard = () => {
         setErrors(result.debuggedCode.identifiedErrors || []);
         setExplanation(result.debuggedCode.explanation || "");
         setFixedCode(result.debuggedCode.suggestedFix || "");
-        console.log("DEBUG RESULT:", result);
       } else {
         toast.error(result.message);
       }
-      setActiveTab("errors"); // show identify errors by default
+
+      setActiveTab("errors");
       await loadPastReviews();
       setLoading(false);
     } catch (error) {
@@ -108,21 +101,20 @@ const Dashboard = () => {
       );
       if (data.success) {
         await loadPastReviews();
-        // clear if selected
         if (selectedHistory?.id === id) {
           setSelectedHistory(null);
           setCode("");
           setExplanation("");
           setErrors([]);
-        } else {
-          toast.error(data.message);
         }
+      } else {
+        toast.error(data.message);
       }
     } catch (err) {
       toast.error(err);
-      console.error(err);
     }
   }
+
   function newSlide() {
     setSelectedHistory(null);
     setCode("");
@@ -138,9 +130,9 @@ const Dashboard = () => {
     setErrors(item.debuggedCode?.identifiedErrors || []);
     setFixedCode(item.debuggedCode?.suggestedFix || "");
     setActiveTab("errors");
-    setSidebarOpen(false); // close sidebar optionally
+    setSidebarOpen(false);
   }
-  // Decide what to show based on tab selection
+
   const renderOutput = () => {
     if (activeTab === "errors") {
       return errors.length ? errors.join("\n") : "No errors found.";
@@ -152,36 +144,42 @@ const Dashboard = () => {
       return fixedCode || "No fixed code available.";
     }
   };
+
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+    if (!token) navigate("/login");
   }, [token]);
 
   return (
-    <div className="max-w-7xl mx-auto py-6 px-4 space-y-4 pt-28">
+    <div className="max-w-7xl mx-auto py-6 px-4 pt-28">
+      {/* SIDEBAR */}
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         pastReviews={pastHistories}
         onSelect={handleSelect}
-        // onEdit={handleEdit}
         onDelete={handleDelete}
         onNewSlide={newSlide}
       />
-      {/* FIXED MINI HEADER */}
+
+      {/* HEADER — Desktop fixed | Mobile full width normal */}
       <header
-        className="fixed top-13 left-4 mr-1 bg-gray-500 text-white 
-px-3 py-2 rounded-md shadow-md font-small flex items-center gap-3"
+        className="
+          bg-gray-500 text-white px-3 py-2 rounded-md shadow-md flex items-center gap-3
+          w-full mb-3      /* full width + normal flow on mobile/tablet */
+          
+          lg:w-auto        /* desktop keeps your original small header */
+          lg:fixed lg:top-13 lg:left-4 lg:mr-1 /* desktop unchanged */
+        "
       >
         <button onClick={() => setSidebarOpen(true)} className="text-sm">
           Open History
         </button>
       </header>
 
-      <div className="flex w-full h-[80vh] gap-4">
+      {/* MAIN LAYOUT — column on mobile/tablet, row on desktop */}
+      <div className="flex flex-col lg:flex-row w-full h-[80vh] gap-4">
         {/* LEFT SIDE */}
-        <div className="w-1/2 border border-grey-600 rounded-lg flex flex-col">
+        <div className="w-full lg:w-1/2 border border-grey-600 rounded-lg flex flex-col">
           <div className="border-b border-gray-300">
             <AIControls
               onDebug={handleDebug}
@@ -193,12 +191,17 @@ px-3 py-2 rounded-md shadow-md font-small flex items-center gap-3"
           </div>
 
           <div className="flex-1 w-full overflow-auto p-2">
-            <Editor value={code} onChange={setCode} />
+            {/* <Editor value={code} onChange={setCode} /> */}
+            <Editor
+              value={code}
+              onChange={setCode}
+              language={selectedLanguage}
+            />
           </div>
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="w-1/2 flex flex-col border rounded-lg">
+        <div className="w-full lg:w-1/2 flex flex-col border rounded-lg">
           {/* TABS */}
           <div className="flex justify-evenly gap-3 p-3 border-b border-gray-300 bg-gray-50">
             <button
@@ -211,6 +214,7 @@ px-3 py-2 rounded-md shadow-md font-small flex items-center gap-3"
             >
               Identify Errors
             </button>
+
             <button
               onClick={() => setActiveTab("fixed")}
               className={`px-4 py-2 rounded-md ${
@@ -221,6 +225,7 @@ px-3 py-2 rounded-md shadow-md font-small flex items-center gap-3"
             >
               Fixed Code
             </button>
+
             <button
               onClick={() => setActiveTab("explanation")}
               className={`px-4 py-2 rounded-md ${
@@ -260,6 +265,5 @@ px-3 py-2 rounded-md shadow-md font-small flex items-center gap-3"
     </div>
   );
 };
-export default Dashboard;
 
-//
+export default Dashboard;

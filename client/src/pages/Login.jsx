@@ -1,60 +1,3 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
-// import { useEffect } from "react";
-
-// const Login = () => {
-//   const { login } = useAuth();
-//   const navigate = useNavigate();
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-//     try {
-//       const res = await login(email, password);
-//       if (res?.token) {
-//         navigate("/dashboard");
-//       } else {
-//         setError(res?.message || "Login failed");
-//       }
-//     } catch (err) {
-//       setError(err?.response?.data?.message || err.message);
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto">
-//       <h2 className="text-2xl mb-4">Login</h2>
-//       <form onSubmit={handleSubmit} className="space-y-3">
-//         <input
-//           className="w-full p-2 border"
-//           placeholder="Email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <input
-//           className="w-full p-2 border"
-//           type="password"
-//           placeholder="Password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//         {error && <div className="text-red-600">{error}</div>}
-//         <button
-//           className="px-4 py-2 bg-blue-600 text-white rounded"
-//           type="submit"
-//         >
-//           Login
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Login;
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 // import { AuthContext } from "../context/AuthContext";
@@ -62,8 +5,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthContext.jsx";
 
-// import axios from "axios";
-// import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const { backendUrl, token, setToken } = useContext(AuthContext);
@@ -115,82 +56,7 @@ const Login = () => {
       navigate("/dashboard");
     }
   }, [token]);
-  // return (
-  //   <form
-  //     onSubmit={onSubmitHandler}
-  //     className="min-h-[80vh]  mt-9 flex items-center "
-  //   >
-  //     {/* <div className="flex flex-col gap-3 m-auto items-center p-8 min-w-[340px] sm:min-w-96  border rounded-xl text-zinc-600 text-sm shadow-lg"> */}
-  //     <div className="flex flex-col gap-3 m-auto items-center p-8 w-full max-w-md border rounded-xl text-zinc-600 text-sm shadow-lg">
-  //       <p className="text-2xl font-semibold">
-  //         {state === "Sign Up" ? "Create Account" : "Login"}
-  //       </p>
-  //       <p>{state === "Sign Up" ? "sign-up" : "login"} to book appointment</p>
-  //       {state === "Sign Up" && (
-  //         <div className="w-full">
-  //           <p>Full Name</p>
-  //           <input
-  //             className="border border-zinc-300 rounded w-full p-2 mt-1"
-  //             type="text"
-  //             onChange={(e) => setName(e.target.value)}
-  //             value={name}
-  //             name=""
-  //             required
-  //           />
-  //         </div>
-  //       )}
-  //       <div className="w-full">
-  //         <p>Email</p>
-  //         <input
-  //           className="border border-zinc-300 rounded w-full p-2 mt-1"
-  //           type="text"
-  //           onChange={(e) => setEmail(e.target.value)}
-  //           value={email}
-  //           name=""
-  //           required
-  //         />
-  //       </div>
-  //       <div className="w-full">
-  //         <p>Password</p>
-  //         <input
-  //           className="border border-zinc-300 rounded w-full p-2 mt-1"
-  //           type="text"
-  //           onChange={(e) => setPassword(e.target.value)}
-  //           value={password}
-  //           name=""
-  //           required
-  //         />
-  //       </div>
-  //       <button
-  //         type="submit"
-  //         className="bg-indigo-500 w-full py-2 rounded-md text-base text-white cursor-pointer"
-  //       >
-  //         {state === "Sign Up" ? "Create Account" : "Login"}
-  //       </button>
-  //       {state === "Sign Up" ? (
-  //         <p>
-  //           Already have acount?{" "}
-  //           <span
-  //             onClick={() => setState("Login")}
-  //             className="text-indigo-500 cursor-pointer underline"
-  //           >
-  //             Login here
-  //           </span>
-  //         </p>
-  //       ) : (
-  //         <p>
-  //           Create a new account?{" "}
-  //           <span
-  //             onClick={() => setState("Sign Up")}
-  //             className="text-indigo-500 cursor-pointer underline"
-  //           >
-  //             click here
-  //           </span>
-  //         </p>
-  //       )}
-  //     </div>
-  //   </form>
-  // );
+
   return (
     <form
       onSubmit={onSubmitHandler}

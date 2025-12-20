@@ -1,36 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// // import { assets } from "../assets/assets";
-// const Home = () => {
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-//       <h1 className="text-4xl font-bold mb-4">
-//         AI Code Debugger, Fixer & Translator
-//       </h1>
-//       <p className="text-lg mb-8">
-//         Your one-stop solution for debugging and translating code with AI
-//         assistance.
-//       </p>
-//       <div className="flex space-x-4">
-//         {/* <Link
-//           to="/login"
-//           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-//         >
-//           Login
-//         </Link> */}
-//         <Link
-//           to="/register"
-//           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-//         >
-//           Debug Now
-//           {/* <img className="w-3" src={assets.arrow_icon} alt="" /> */}
-//         </Link>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";

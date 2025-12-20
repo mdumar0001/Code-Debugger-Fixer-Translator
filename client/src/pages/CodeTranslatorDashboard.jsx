@@ -12,148 +12,72 @@ const LANGUAGES = ["Python", "JavaScript", "Java", "C++", "C#"];
 const CodeTranslatorDashboard = () => {
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
+  const BASE_URL =
+    "https://code-debugger-fixer-translator-2-backend.onrender.com";
+  //const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
-  const BASE_URL = "https://code-debugger-fixer-translator-2-backend.onrender.com";
-  // const BASE_URL = process.env.REACT_APP_BACKEND_URL;
-
-  // Sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Input Code
   const [sourceCode, setSourceCode] = useState("");
-
-  // Output Code
   const [convertedCode, setConvertedCode] = useState("");
-
-  // Selected Languages
   const [sourceLang, setSourceLang] = useState("Python");
   const [targetLang, setTargetLang] = useState("JavaScript");
-
-  // Loader
   const [loading, setLoading] = useState(false);
 
-  // History States
   const [pastTranslations, setPastTranslations] = useState([]);
   const [selectedHistory, setSelectedHistory] = useState(null);
 
-  // Load History on Login
   useEffect(() => {
     if (token) loadHistory();
   }, [token]);
 
-  // Fetch Translation History
   async function loadHistory() {
     try {
       const { data } = await axios.get(`${BASE_URL}/api/translator/history`, {
         headers: { token },
       });
 
-      if (data.success) {
-        setPastTranslations(data.list || []);
-      }
+      if (data.success) setPastTranslations(data.list || []);
     } catch (err) {
       console.error("LOAD HISTORY ERROR:", err);
     }
   }
 
-  // Handle Translation
-  //   const convertCode = async () => {
-  //     if (!sourceCode.trim()) {
-  //       toast.error("Please enter some code to translate.");
-  //       return;
-  //     }
-
-  //     setLoading(true);
-  //     try {
-  //       const res = await axios.post(
-  //         `${BASE_URL}/api/translator/convert`,
-  //         {
-  //           sourceCode,
-  //           sourceLang,
-  //           targetLang,
-  //         },
-  //         {
-  //           headers: { token },
-  //         }
-  //       );
-
-  //   if (res.data.success) {
-  //     setConvertedCode(res.data.convertedCode);
-
-  //     // Refresh History
-  //     await loadHistory();
-  //   } else {
-  //     toast.error(res.data.message);
-  //   }
-  //     } catch (error) {
-  //       toast.error("Translation failed.");
-  //     }
-  //     setLoading(false);
-  //   };
   const convertCode = async () => {
-    if (!sourceCode.trim()) {
-      setConvertedCode("Please enter code.");
-      return;
-    }
+    if (!sourceCode.trim()) return setConvertedCode("Please enter code.");
 
     setLoading(true);
     try {
-      //   const res = await axios.post(`${BASE_URL}/ai/get-response`, {
-      // code: sourceCode,
-      // sourceLang,
-      // targetLang,
-      //     header
-      //   });
-
       const response = await fetch(`${BASE_URL}/ai/get-response`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          token: token,
+          token,
         },
-
         body: JSON.stringify({ code: sourceCode, sourceLang, targetLang }),
       });
-      const ress = await response.json();
-      console.log(ress);
-      if (ress?.convertedCode) {
-        setConvertedCode(ress.convertedCode);
-        console.log("hi");
-        // Refresh History
+
+      const res = await response.json();
+      if (res?.convertedCode) {
+        setConvertedCode(res.convertedCode);
         await loadHistory();
-      } else {
-        toast.error(ress.message);
-      }
-      //   --------------------------
-      //   setErrors(result.debuggedCode.identifiedErrors || []);
-      //   setExplanation(result.debuggedCode.explanation || "");
-      //   setFixedCode(result.debuggedCode.suggestedFix || "");
-      //   console.log("DEBUG RESULT:", result);
-      // } else {
-      //   toast.error(result.message);
-      // }
-      // setActiveTab("errors"); // show identify errors by default
-      // await loadPastReviews();
-      // setLoading(false);    //   console.log(res.data);
-      //   setConvertedCode(res.data.convertedCode);
+      } else toast.error(res.message);
     } catch (error) {
       toast.error("Translation failed.");
       setConvertedCode("Conversion failed.");
     }
+
     setLoading(false);
   };
-  // Selecting a past history item
+
   function handleSelect(item) {
     setSelectedHistory(item);
     setSourceCode(item.code);
     setConvertedCode(item.convertedCode);
     setSourceLang(item.sourceLang);
     setTargetLang(item.targetLang);
-
     setSidebarOpen(false);
   }
 
-  // Delete translation
   async function handleDelete(id) {
     try {
       const { data } = await axios.delete(
@@ -163,7 +87,6 @@ const CodeTranslatorDashboard = () => {
 
       if (data.success) {
         await loadHistory();
-
         if (selectedHistory?.id === id) {
           setSelectedHistory(null);
           setSourceCode("");
@@ -175,21 +98,20 @@ const CodeTranslatorDashboard = () => {
     }
   }
 
-  // Start new blank translation
   function newSlide() {
     setSelectedHistory(null);
     setSourceCode("");
     setConvertedCode("");
     setSidebarOpen(false);
   }
+
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+    if (!token) navigate("/login");
   }, [token]);
+
   return (
-    <div className="max-w-7xl mx-auto pt-28 px-4 py-0 space-y-4">
-      {/* Sidebar */}
+    <div className="max-w-7xl mx-auto pt-28 px-4 space-y-4">
+      {/* SIDEBAR */}
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -199,21 +121,25 @@ const CodeTranslatorDashboard = () => {
         onNewSlide={newSlide}
       />
 
-      {/* Mini Header */}
+      {/* HEADER — Desktop fixed | Mobile full width + normal */}
       <header
-        className="fixed top-13 left-4 mr-1 bg-gray-500 text-white px-3 py-2 
-        rounded-md shadow-md font-small flex items-center gap-3"
+        className="
+          bg-gray-500 text-white px-3 py-2 rounded-md shadow-md flex items-center gap-3
+          w-full mb-3
+          lg:w-auto 
+          lg:fixed lg:top-13 lg:left-4 lg:mr-1
+        "
       >
         <button onClick={() => setSidebarOpen(true)} className="text-sm">
           Open History
         </button>
       </header>
 
-      <div className="flex w-full h-[80vh] gap-4">
+      {/* MAIN LAYOUT: mobile = vertical, desktop = horizontal */}
+      <div className="flex flex-col lg:flex-row w-full h-[80vh] gap-4">
         {/* LEFT SIDE */}
-        <div className="w-1/2 border border-grey-600 rounded-lg flex flex-col">
-          {/* Language Selectors */}
-          <div className="border-b border-gray-300 p-3 flex gap-4 bg-gray-100">
+        <div className="w-full lg:w-1/2 border rounded-lg flex flex-col">
+          <div className="border-b border-gray-300 p-3 flex flex-wrap gap-4 bg-gray-100">
             <div className="flex flex-col">
               <label className="text-xs font-semibold">Source Language</label>
               <select
@@ -248,14 +174,17 @@ const CodeTranslatorDashboard = () => {
             </button>
           </div>
 
-          {/* Code Input Editor */}
           <div className="flex-1 w-full overflow-auto p-2">
-            <Editor value={sourceCode} onChange={setSourceCode} />
+            <Editor
+              value={sourceCode}
+              onChange={setSourceCode}
+              language={sourceLang}
+            />
           </div>
         </div>
 
-        {/* RIGHT SIDE OUTPUT */}
-        <div className="w-1/2 flex flex-col border rounded-lg">
+        {/* RIGHT SIDE */}
+        <div className="w-full lg:w-1/2 flex flex-col border rounded-lg">
           <div className="p-3 border-b border-gray-300 bg-gray-50">
             <h2 className="font-semibold text-lg">Output ({targetLang})</h2>
           </div>
