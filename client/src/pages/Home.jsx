@@ -40,76 +40,126 @@ const features = [
 const Home = () => {
   const [current, setCurrent] = useState(0);
 
-  // Auto-slide every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % features.length);
     }, 3500);
+
     return () => clearInterval(interval);
   }, []);
 
   return (
-    // <div className="min-h-screen bg-gradient-to-br from-violet-900 via-violet to-blue-150 text-white flex items-center justify-center overflow-hidden relative px-6">
-    //   {/* Slides Container */}
-    // <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-indigo-500 to-indigo-200 text-white flex items-center justify-center overflow-hidden relative px-6">
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white flex items-center justify-center overflow-hidden relative px-6">
-      <div className="max-w-2xl text-center min-h-[380px] md:min-h-[420px] flex flex-col justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -40 }}
-            transition={{ duration: 0.7 }}
-            className="space-y-6"
-          >
-            <h1
-              className="
-    text-3xl md:text-5xl font-bold pb-4
-    bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-green-400
-    leading-tight 
-    break-words 
-    mx-auto 
-    max-w-[90%]
-  "
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white overflow-hidden">
+      <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 md:px-10">
+        <div className="w-full max-w-4xl text-center flex flex-col justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -32 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="space-y-6 sm:space-y-8"
             >
-              {features[current].title}
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
-              {features[current].desc}
-            </p>
-
-            {/* CTA Button */}
-            <div className="">
-              {" "}
-              <Link
-                to="/Tdashboard"
-                className="inline-block px-8 py-3 mr-4 rounded-xl text-lg font-semibold bg-gradient-to-r from-blue-600 to-green-600 shadow-lg shadow-blue-500/20 hover:scale-105 transform transition"
+              {/* Title */}
+              <h1
+                className="
+    text-3xl md:text-5xl font-bold pb-4 mt-2
+    bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-green-400
+    leading-tight
+    break-words
+    mx-auto
+    max-w-[90%]
+              "
               >
-                Translate Now →
-              </Link>
-              <Link
-                to="/dashboard"
-                className="inline-block px-8 py-3 rounded-xl text-lg font-semibold bg-gradient-to-r from-blue-600 to-green-600 shadow-lg shadow-blue-500/20 hover:scale-105 transform transition"
-              >
-                Debug Now →
-              </Link>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+                {features[current].title}
+              </h1>
 
-        {/* Bullet Indicators */}
-        <div className="flex justify-center mt-10 space-x-3">
-          {features.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-3 w-3 rounded-full transition-all ${
-                i === current ? "bg-green-400 w-6" : "bg-gray-500"
-              }`}
-            />
-          ))}
+              {/* Description */}
+              <p
+                className="
+                mx-auto
+                max-w-3xl
+                text-base
+                sm:text-lg
+                md:text-xl
+                text-gray-300
+                leading-relaxed
+              "
+              >
+                {features[current].desc}
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                <Link
+                  to="/Tdashboard"
+                  className="
+                    w-full
+                    sm:w-auto
+                    px-8
+                    py-3
+                    rounded-xl
+                    text-base
+                    sm:text-lg
+                    font-semibold
+                    bg-gradient-to-r
+                    from-blue-600
+                    to-green-600
+                    shadow-lg
+                    shadow-blue-500/20
+                    transform
+                    transition
+                    hover:scale-105
+                  "
+                >
+                  Translate Now →
+                </Link>
+
+                <Link
+                  to="/dashboard"
+                  className="
+                    w-full
+                    sm:w-auto
+                    px-8
+                    py-3
+                    rounded-xl
+                    text-base
+                    sm:text-lg
+                    font-semibold
+                    bg-gradient-to-r
+                    from-blue-600
+                    to-green-600
+                    shadow-lg
+                    shadow-blue-500/20
+                    transform
+                    transition
+                    hover:scale-105
+                  "
+                >
+                  Debug Now →
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Indicators */}
+          <div className="mt-10 flex justify-center gap-3">
+            {features.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                aria-label={`Slide ${i + 1}`}
+                className={`
+                  h-3
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${i === current ? "bg-green-400 w-6" : "bg-gray-500 w-3"}
+                `}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
